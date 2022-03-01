@@ -393,11 +393,11 @@ public class LobbyManager : MonoBehaviour
                 player.GetComponent<NetworkMatch>().matchId = matchId;
                 NetworkServer.AddPlayerForConnection(playerConn, player);
 
-                matchController.players.Add(player.GetComponent<Player>());
+                matchController.players.Add(playerConn.identity);
 
                 /* Reset ready state for after the match. */
                 PlayerInfo playerInfo = playerInfos[playerConn];
-                playerInfo.ready = false;
+                playerInfo.ready = true;
                 playerInfos[playerConn] = playerInfo;
             }
             
@@ -528,7 +528,7 @@ public class LobbyManager : MonoBehaviour
 
     private IEnumerator StartMatchCar()
     {
-        int time = 10;
+        int time =5;
         btnGame.interactable = false;
         while (time > 0)
         {
