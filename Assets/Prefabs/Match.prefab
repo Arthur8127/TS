@@ -333,6 +333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  hud: {fileID: 5442651379280649833}
   currentPlayer: 0
   canvas: {fileID: 501390741884717839}
 --- !u!114 &2355263469281219059

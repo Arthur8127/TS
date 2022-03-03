@@ -15,6 +15,7 @@ public class LobbyManager : MonoBehaviour
     internal static readonly Dictionary<Guid, HashSet<NetworkConnection>> matchConnections = new Dictionary<Guid, HashSet<NetworkConnection>>();
     internal static readonly Dictionary<NetworkConnection, PlayerInfo> playerInfos = new Dictionary<NetworkConnection, PlayerInfo>();
     internal static readonly List<NetworkConnection> waitingConnections = new List<NetworkConnection>();
+    internal static List<MatchData> allMatches = new List<MatchData>();
     internal Guid localPlayerMatch = Guid.Empty;
     internal Guid localJoinedMatch = Guid.Empty;
     internal Guid selectedMatch = Guid.Empty;
@@ -24,7 +25,8 @@ public class LobbyManager : MonoBehaviour
     public Button btnGame;
     public Text btnText;
     public GameObject lobbyCanvas;
-
+    public PlayerData playerData;
+    
     private void Awake()
     {
         instance = this;
@@ -384,32 +386,45 @@ public class LobbyManager : MonoBehaviour
             NetworkServer.Spawn(matchControllerObject);
 
             MatchController matchController = matchControllerObject.GetComponent<MatchController>();
-
+          
+            MatchData matchData = new MatchData();
+            matchData.matchID = matchId;
+            matchData.matchController = matchController;
+            allMatches.Add(matchData);
+            
             foreach (NetworkConnection playerConn in matchConnections[matchId])
             {
                 playerConn.Send(new ClientMatchMessage { clientMatchOperation = ClientMatchOperation.Started });
 
                 GameObject player = Instantiate(NetManager.instance.playerPrefab);
                 player.GetComponent<NetworkMatch>().matchId = matchId;
+
                 NetworkServer.AddPlayerForConnection(playerConn, player);
 
                 matchController.players.Add(playerConn.identity);
-
-                /* Reset ready state for after the match. */
                 PlayerInfo playerInfo = playerInfos[playerConn];
                 playerInfo.ready = true;
                 playerInfos[playerConn] = playerInfo;
+                
+                if(matchController.players.Count == 2)
+                {
+                    matchController.SetupPlayer();
+                }
+                
             }
-            
-           
+
+
             playerMatches.Remove(conn);
             openMatches.Remove(matchId);
             matchConnections.Remove(matchId);
             SendMatchList();
             OnPlayerDisconnected += matchController.OnPlayerDisconnected;
-           
+
         }
     }
+
+    
+
     void OnServerJoinMatch(NetworkConnection conn, Guid matchId)
     {
         if (!NetworkServer.active || !matchConnections.ContainsKey(matchId) || !openMatches.ContainsKey(matchId)) return;
@@ -434,7 +449,7 @@ public class LobbyManager : MonoBehaviour
             playerConn.Send(new ClientMatchMessage { clientMatchOperation = ClientMatchOperation.UpdateRoom, playerInfos = infos });
         }
     }
-    #endregion
+#endregion
 
     #region Client Match Message Handler
 
@@ -528,7 +543,7 @@ public class LobbyManager : MonoBehaviour
 
     private IEnumerator StartMatchCar()
     {
-        int time =5;
+        int time = 5;
         btnGame.interactable = false;
         while (time > 0)
         {
@@ -544,4 +559,19 @@ public class LobbyManager : MonoBehaviour
         lobbyCanvas.SetActive(false);
     }
     #endregion
+}
+
+[System.Serializable]
+public class PlayerData
+{
+    public int WallHp;
+    public int TownHp;
+    public int[] Resources;
+    public int[] Adding;
+}
+
+public class MatchData
+{
+    public Guid matchID;
+    public MatchController matchController;
 }

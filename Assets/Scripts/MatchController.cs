@@ -8,7 +8,8 @@ using System;
 public class MatchController : NetworkBehaviour
 {
     public static MatchController instance;
-    public SyncList<NetworkIdentity> players = new SyncList<NetworkIdentity>();
+    public Hud hud;
+    public List<NetworkIdentity> players = new List<NetworkIdentity>();
     [SyncVar] public int currentPlayer = 0;
 
     #region UI
@@ -18,30 +19,40 @@ public class MatchController : NetworkBehaviour
 #if !UNITY_SERVER
     private void Awake()
     {
-        instance = this;       
+        Debug.LogError("Match Awake!");
+        instance = this;
     }
 #endif
 
     private void Start()
     {
-        if(!isServer)
+        if (!isServer)
         {
-            players.Callback += OnUpdatePlayers;
             canvas.worldCamera = Camera.main;
         }
+
     }
-    private void OnUpdatePlayers(SyncList<NetworkIdentity>.Operation op, int itemIndex, NetworkIdentity oldItem, NetworkIdentity newItem)
-    {
-        SetupStaticLinks(newItem);
-    }
+
     public void OnPlayerDisconnected(NetworkConnection conn)
     {
 
     }
-    public void SetupStaticLinks(NetworkIdentity identity)
+
+
+
+    public void SetupPlayer()
     {
-        Player player = identity.GetComponent<Player>();
-        if (player.isLocalPlayer) Player.localPlayer = player;
-        else Player.enemyPlayer = player;
+        for (int x = 0; x < players.Count; x++)
+        {
+            Player player = players[x].GetComponent<Player>();
+            player.WallHp = LobbyManager.instance.playerData.WallHp;
+            player.TownHp = LobbyManager.instance.playerData.TownHp;
+            for (int i = 0; i < 3; i++)
+            {
+                player.Resources.Add(LobbyManager.instance.playerData.Resources[i]);
+                player.Adding.Add(LobbyManager.instance.playerData.Adding[i]);
+            }
+        }
     }
+
 }

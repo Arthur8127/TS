@@ -389,6 +389,11 @@ MonoBehaviour:
   btnGame: {fileID: 165721742}
   btnText: {fileID: 1458068605}
   lobbyCanvas: {fileID: 436467446}
+  playerData:
+    WallHp: 20
+    TownHp: 15
+    Resources: 0a0000000a0000000a000000
+    Adding: 050000000500000005000000
 --- !u!4 &775224575
 Transform:
   m_ObjectHideFlags: 0
