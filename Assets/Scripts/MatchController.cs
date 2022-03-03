@@ -18,8 +18,7 @@ public class MatchController : NetworkBehaviour
 #if !UNITY_SERVER
     private void Awake()
     {
-        instance = this;
-        Debug.LogError("Match link!");
+        instance = this;       
     }
 #endif
 
@@ -31,7 +30,6 @@ public class MatchController : NetworkBehaviour
             canvas.worldCamera = Camera.main;
         }
     }
-
     private void OnUpdatePlayers(SyncList<NetworkIdentity>.Operation op, int itemIndex, NetworkIdentity oldItem, NetworkIdentity newItem)
     {
         SetupStaticLinks(newItem);

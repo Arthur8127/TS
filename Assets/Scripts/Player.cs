@@ -21,10 +21,11 @@ public class Player : NetworkBehaviour
         if (!isServer)
         {
             Resources.Callback += Resources_Callback;
-            Adding.Callback += Adding_Callback;
+            Adding.Callback += Adding_Callback;            
         }
     }
 
+    
     #region CallBacks SyncVars
     private void OnUpdateTownHp(int old, int newValue)
     {

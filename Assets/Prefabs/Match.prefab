@@ -334,7 +334,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   currentPlayer: 0
-  canvas: {fileID: 0}
+  canvas: {fileID: 501390741884717839}
 --- !u!114 &2355263469281219059
 MonoBehaviour:
   m_ObjectHideFlags: 0
