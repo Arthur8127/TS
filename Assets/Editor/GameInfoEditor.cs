@@ -19,9 +19,9 @@ public class GameInfoEditor : Editor
 
         base.OnInspectorGUI();
         EditorGUILayout.Space();
-        EditorGUILayout.HelpBox("Все в редакторе", MessageType.Info);
+        EditorGUILayout.HelpBox("Use CardManger windows", MessageType.Info);
         EditorGUILayout.Space();
-        if (GUILayout.Button("Открыть редактор", GUILayout.Height(35)))
+        if (GUILayout.Button("Open CarManager", GUILayout.Height(35)))
         {
             CardManagerEditor.ShowWindows();
         }

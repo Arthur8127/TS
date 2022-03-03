@@ -37,7 +37,7 @@ public class CardManagerEditor : EditorWindow
         ShowAllCards();
         EditorGUILayout.EndScrollView();
         scrollRight = EditorGUILayout.BeginScrollView(scrollRight);
-        if (currentCard < 0) EditorGUILayout.HelpBox("Нет выделений!", MessageType.Warning);
+        if (currentCard < 0) EditorGUILayout.HelpBox("No cards", MessageType.Warning);
         ShowAction();
         EditorGUILayout.EndScrollView();
         EditorGUILayout.EndHorizontal();
@@ -56,11 +56,11 @@ public class CardManagerEditor : EditorWindow
             EditorGUILayout.BeginHorizontal();
             game.allCards[i].sprite = (Sprite)EditorGUILayout.ObjectField(game.allCards[i].sprite, typeof(Sprite), allowSceneObjects: false, GUILayout.Height(120), GUILayout.Width(80));
             EditorGUILayout.BeginVertical();
-            EditorGUILayout.LabelField("Использует ресурсы");
+            EditorGUILayout.LabelField("Nedeed resources");
             game.allCards[i].nedeedResourcesType = (CardBase.NedeedType)EditorGUILayout.EnumPopup(game.allCards[i].nedeedResourcesType);
-            game.allCards[i].nedeedCount = EditorGUILayout.IntField("Кол-во: ", game.allCards[i].nedeedCount);
+            game.allCards[i].nedeedCount = EditorGUILayout.IntField("Count: ", game.allCards[i].nedeedCount);
             EditorGUILayout.Space();
-            game.allCards[i].isDropped = EditorGUILayout.Toggle("Можно скинуть: ", game.allCards[i].isDropped);
+            game.allCards[i].isDropped = EditorGUILayout.Toggle("Is dropped: ", game.allCards[i].isDropped);
             EditorGUILayout.BeginHorizontal();
             GUI.backgroundColor = Color.red;
             if (GUILayout.Button("X", GUILayout.Width(35), GUILayout.Height(25)))
@@ -74,7 +74,7 @@ public class CardManagerEditor : EditorWindow
                 GUI.backgroundColor = Color.green;
             }
 
-            if (GUILayout.Button("Подробнее", GUILayout.Height(25)))
+            if (GUILayout.Button("Actions", GUILayout.Height(25)))
             {
                 SelectCard(game.allCards[i].index);
             }
@@ -142,14 +142,14 @@ public class CardManagerEditor : EditorWindow
        
         if (action.IsDisplay)
         {
-            EditorGUILayout.LabelField("Условия!");
+            EditorGUILayout.LabelField("IF");
             EditorGUILayout.BeginHorizontal();
             action.left = (ActionCondition.Condition)EditorGUILayout.EnumPopup(action.left);
             action.calc = (ActionCondition.Calculator)EditorGUILayout.EnumPopup(action.calc);
             action.right = (ActionCondition.Condition)EditorGUILayout.EnumPopup(action.right);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(20);
-            action.isShowLeft = EditorGUILayout.Foldout(action.isShowLeft, "Если Yes", true);
+            action.isShowLeft = EditorGUILayout.Foldout(action.isShowLeft, "Condiction true", true);
             if (action.isShowLeft)
             {
                 GUI.backgroundColor = Color.green;
@@ -187,7 +187,7 @@ public class CardManagerEditor : EditorWindow
                 EditorGUILayout.EndVertical();
             }
 
-            action.isShowRight = EditorGUILayout.Foldout(action.isShowRight, "Если No", true);
+            action.isShowRight = EditorGUILayout.Foldout(action.isShowRight, "Condiction false", true);
             if (action.isShowRight)
             {
                 GUI.backgroundColor = Color.green;

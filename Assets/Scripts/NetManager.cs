@@ -19,8 +19,7 @@ public class NetManager : NetworkManager
     public override void Start()
     {
         LobbyManager.instance.InitializeData();
-        base.Start();
-        
+        base.Start();        
     }
 
     #endregion
