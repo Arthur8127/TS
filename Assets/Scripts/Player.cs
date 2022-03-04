@@ -14,6 +14,7 @@ public class Player : NetworkBehaviour
     public int TownHp;
     public SyncList<int> Resources = new SyncList<int>();
     public SyncList<int> Adding = new SyncList<int>();
+    public SyncList<int> CardsInHands = new SyncList<int>();
 
     private void Start()
     {
@@ -22,32 +23,34 @@ public class Player : NetworkBehaviour
             Debug.LogError("start!");
             Resources.Callback += Resources_Callback;
             Adding.Callback += Adding_Callback;
-            
+            CardsInHands.Callback += OnUpdateCardsInHands;
         }
     }
 
     
-    
+
+
+
     #region CallBacks SyncVars
     private void OnUpdateTownHp(int old, int newValue)
     {
-        if (MatchController.instance == null) return;
         MatchController.instance.hud.OnUodateUi(this);
     }
     private void OnUpdateWallHp(int old, int newValue)
     {
-        if (MatchController.instance == null) return;
         MatchController.instance.hud.OnUodateUi(this);
     }
     private void Resources_Callback(SyncList<int>.Operation op, int itemIndex, int oldItem, int newItem)
     {
-        if (MatchController.instance == null) return;
         MatchController.instance.hud.OnUodateUi(this);
     }
     private void Adding_Callback(SyncList<int>.Operation op, int itemIndex, int oldItem, int newItem)
     {
-        if (MatchController.instance == null) return;
         MatchController.instance.hud.OnUodateUi(this);
+    }
+    private void OnUpdateCardsInHands(SyncList<int>.Operation op, int itemIndex, int oldItem, int newItem)
+    {
+        
     }
     #endregion
 }
