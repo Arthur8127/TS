@@ -6,10 +6,6 @@ using TMPro;
 public class Hud : MonoBehaviour
 {
     public PlayerUI[] playerUIs;
-
-
-
-
     public void OnUodateUi(Player player)
     {
         int indexUi;
@@ -37,6 +33,8 @@ public class Hud : MonoBehaviour
             playerUIs[indexUi].adding[i].text = "adding" + i + ": " + player.Adding[i];
         }
     }
+
+
 }
 
 [System.Serializable]

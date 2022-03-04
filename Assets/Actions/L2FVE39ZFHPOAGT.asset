@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829394186fe14b94f936b1461738af29, type: 3}
+  m_Name: L2FVE39ZFHPOAGT
+  m_EditorClassIdentifier: 
+  actionType: 1
+  mainEvent: 0
+  resourceType: 0
+  addingResourcesType: 0
+  sendValue: 0
+  isForEmpty: 0
+  IsDisplay: 1
+  isShowLeft: 1
+  isShowRight: 1
+  left: 1
+  right: 8
+  calc: 2
+  ActionsForYes:
+  - {fileID: 11400000, guid: 2e933084aceb1475b88affaa7df0539f, type: 2}
+  ActionsForNo:
+  - {fileID: 11400000, guid: 6803610e9f9d548ef869d8b21e81daf1, type: 2}

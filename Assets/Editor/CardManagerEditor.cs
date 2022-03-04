@@ -115,8 +115,12 @@ public class CardManagerEditor : EditorWindow
         if (action.IsDisplay)
         {
             action.mainEvent = (ActionBase.MainEvent)EditorGUILayout.EnumPopup("Main Event", action.mainEvent);
-            action.sendValue = EditorGUILayout.IntField("Send Value", action.sendValue);
-            action.isForEmpty = EditorGUILayout.Toggle("For Empty", action.isForEmpty);
+            if(action.mainEvent != ActionBase.MainEvent.PlayAgain && action.mainEvent != ActionBase.MainEvent.SwichWalls && action.mainEvent != ActionBase.MainEvent.Discard && action.mainEvent != ActionBase.MainEvent.MagicEqualsHighestPlayer
+                && action.mainEvent  != ActionBase.MainEvent.EqualizeQuarry)
+            {
+                action.sendValue = EditorGUILayout.IntField("Send Value", action.sendValue);
+                action.isForEmpty = EditorGUILayout.Toggle("For Empty", action.isForEmpty);
+            }
             if (action.mainEvent == ActionBase.MainEvent.ResourcesEdit)
             {
                 action.resourceType = (ActionBase.ResourceType)EditorGUILayout.EnumPopup("Resource", action.resourceType);
@@ -163,8 +167,11 @@ public class CardManagerEditor : EditorWindow
                     if (ab.IsDisplay)
                     {
                         ab.mainEvent = (ActionBase.MainEvent)EditorGUILayout.EnumPopup("Main Event", ab.mainEvent);
-                        ab.sendValue = EditorGUILayout.IntField("Send Value", ab.sendValue);
-                        ab.isForEmpty = EditorGUILayout.Toggle("For Enemy", ab.isForEmpty);
+                        if(ab.mainEvent != ActionBase.MainEvent.EqualizeQuarry)
+                        {
+                            ab.sendValue = EditorGUILayout.IntField("Send Value", ab.sendValue);
+                            ab.isForEmpty = EditorGUILayout.Toggle("For Enemy", ab.isForEmpty);
+                        }                        
                         if (ab.mainEvent == ActionBase.MainEvent.ResourcesEdit)
                         {
                             ab.resourceType = (ActionBase.ResourceType)EditorGUILayout.EnumPopup("Resource", ab.resourceType);
@@ -192,6 +199,7 @@ public class CardManagerEditor : EditorWindow
             {
                 GUI.backgroundColor = Color.green;
                 if (GUILayout.Button("Create Action")) action.ActionsForNo.Add(CreateNewAction());
+                
                 GUI.backgroundColor = col;
                 EditorGUILayout.BeginVertical("box");
                 for (int i = 0; i < action.ActionsForNo.Count; i++)
