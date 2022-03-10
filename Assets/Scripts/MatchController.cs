@@ -13,7 +13,7 @@ public class MatchController : NetworkBehaviour
     public Hud hud;
     public List<NetworkIdentity> players = new List<NetworkIdentity>();
     [SyncVar(hook = nameof(OnNextPlayer))] public int currentPlayer = 0;
-
+    
     public delegate void OnBlock(bool value);
     public event OnBlock onBlock;
     [SyncVar(hook = nameof(OnUpdateTimer))]
@@ -124,13 +124,33 @@ public class MatchController : NetworkBehaviour
         StartCoroutine(StartPlayer());
     }
 
+    [Command(requiresAuthority =false)]
+    public void CmdUseCard(int slotID)
+    {
+        OnUpdateBlock(null);
+        Player player = players[currentPlayer].GetComponent<Player>();
+        matchAllCards.Add(GameInformation.instance.allCards[player.CardsInHands[slotID]].GetClone());
+        int cardID = player.CardsInHands[slotID];
+        RpcUseCard(slotID, cardID);
+
+    }
+
+    [ClientRpc]
+    private void RpcUseCard(int slotId, int cardID)
+    {
+        UiCardPrefab card = Instantiate(hud.UICardPrefab, hud.slotsTable[hud.cardInTable]).GetComponent<UiCardPrefab>();
+        card.img.sprite = GameInformation.instance.allCards[cardID].sprite;
+        card.transform.position = hud.slotsHands[slotId].position;
+        card.StartCoroutine(card.MoveZirroPos());
+    }
+
     [ClientRpc]
     private void RpcDropcard(int slotID)
     {
         UiCardPrefab card = Instantiate(hud.UICardPrefab, hud.dropCardContent).GetComponent<UiCardPrefab>();
         card.img.sprite = hud.cardBgSprite;
         card.img.color = Color.white;
-        card.transform.position = hud.slots[slotID].position;
+        card.transform.position = hud.slotsHands[slotID].position;
         card.StartCoroutine(card.MoveZirroPos());
     }
 

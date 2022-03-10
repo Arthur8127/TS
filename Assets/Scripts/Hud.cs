@@ -7,11 +7,12 @@ public class Hud : MonoBehaviour
 {
     [HideInInspector]public Player localPlayer;
     public PlayerUI[] playerUIs;
-    public List<RectTransform> slots;
+    public List<RectTransform> slotsHands;
+    public List<RectTransform> slotsTable;
     public GameObject UICardPrefab;
     public RectTransform cardSpawnPos, dropCardContent;
     public Sprite cardBgSprite;
-
+    public int cardInTable = 0;
 
     public void OnUodateUi(Player player)
     {
@@ -43,7 +44,7 @@ public class Hud : MonoBehaviour
 
     public void AddCardInSlot(int slotIndex, int cardID)
     {
-        UiCardPrefab uiCard = Instantiate(UICardPrefab, slots[slotIndex]).GetComponent<UiCardPrefab>();
+        UiCardPrefab uiCard = Instantiate(UICardPrefab, slotsHands[slotIndex]).GetComponent<UiCardPrefab>();
         uiCard.cardID = cardID;
         uiCard.img.sprite = GameInformation.instance.allCards[cardID].sprite;
         uiCard.transform.position = cardSpawnPos.position;

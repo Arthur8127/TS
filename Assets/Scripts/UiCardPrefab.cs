@@ -57,7 +57,12 @@ public class UiCardPrefab : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         if(eventData.button == PointerEventData.InputButton.Right)
         {
             MatchController.instance.CmdDropCard(slotCurrentIndex);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+        }
+        else if(eventData.button == PointerEventData.InputButton.Left)
+        {
+            MatchController.instance.CmdUseCard(slotCurrentIndex);
+            Destroy(gameObject);
         }
     }
 
