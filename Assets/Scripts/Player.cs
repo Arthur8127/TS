@@ -7,7 +7,7 @@ using System;
 
 public class Player : NetworkBehaviour
 {
-    
+
     [SyncVar(hook = nameof(OnUpdateWallHp))]
     public int WallHp;
     [SyncVar(hook = nameof(OnUpdateTownHp))]
@@ -15,6 +15,8 @@ public class Player : NetworkBehaviour
     public SyncList<int> Resources = new SyncList<int>();
     public SyncList<int> Adding = new SyncList<int>();
     public SyncList<int> CardsInHands = new SyncList<int>();
+    public bool IsCurrentPlayer;
+
 
     private void Start()
     {
@@ -23,13 +25,16 @@ public class Player : NetworkBehaviour
             Debug.LogError("start!");
             Resources.Callback += Resources_Callback;
             Adding.Callback += Adding_Callback;
-            CardsInHands.Callback += OnUpdateCardsInHands;
+
         }
     }
 
-    
-
-
+    public override void OnStartAuthority()
+    {
+        MatchController.instance.hud.localPlayer = this;
+        MatchController.instance.onBlock += OnUpdateBlock;
+        CardsInHands.Callback += OnUpdateCardsInHands;
+    }
 
     #region CallBacks SyncVars
     private void OnUpdateTownHp(int old, int newValue)
@@ -48,10 +53,18 @@ public class Player : NetworkBehaviour
     {
         MatchController.instance.hud.OnUodateUi(this);
     }
-    private void OnUpdateCardsInHands(SyncList<int>.Operation op, int itemIndex, int oldItem, int newItem)
+    private void OnUpdateCardsInHands(SyncList<int>.Operation op, int slotIndex, int oldItem, int cardID)
     {
-        
+        MatchController.instance.hud.AddCardInSlot(slotIndex, cardID);
+       
     }
+
+    private void OnUpdateBlock(bool value)
+    {
+        IsCurrentPlayer = value;
+       
+    }
+
     #endregion
 }
 
