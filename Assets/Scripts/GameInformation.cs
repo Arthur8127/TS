@@ -6,7 +6,7 @@ public class GameInformation : MonoBehaviour
 {
     public static GameInformation instance;
     public List<CardBase> allCards = new List<CardBase>();
-
+    
     private void Awake()
     {
         instance = this;

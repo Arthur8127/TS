@@ -5,69 +5,32 @@ using TMPro;
 using UnityEngine.UI;
 public class Hud : MonoBehaviour
 {
-    [HideInInspector]public Player localPlayer;
-    public PlayerUI[] playerUIs;
-    public List<RectTransform> slotsHands;
-    public List<RectTransform> slotsTable;
-    public GameObject UICardPrefab;
-    public RectTransform cardSpawnPos, dropCardContent;
-    public Sprite cardBgSprite;
-    public int cardInTable = 0;
+    public static Hud instance;
+    public static Player localPlayer;
+    public List<Slot> handSlots;
+    public List<RectTransform> tablePoints;
+    public RectTransform cardSpawnPos, cardDropPos;
+    public UiInfo[] uiInfos;
 
-    public void OnUodateUi(Player player)
+    private void Awake() => instance = this;
+
+    
+
+
+    public void ChangeActiveSlots(bool value)
     {
-        int indexUi;
-
-        if (player.isLocalPlayer)
+        for (int i = 0; i < handSlots.Count; i++)
         {
-
-            indexUi = 0;
-        }
-        else
-        {
-
-            indexUi = 1;
-        }
-
-        playerUIs[indexUi].TownHp.text = "TownHp: " + player.TownHp;
-        playerUIs[indexUi].WallHp.text = "WallHp: " + player.WallHp;
-
-        for (int i = 0; i < playerUIs[indexUi].resources.Count; i++)
-        {
-            playerUIs[indexUi].resources[i].text = "Res" + i + ": " + player.Resources[i];
-        }
-        for (int i = 0; i < playerUIs[indexUi].adding.Count; i++)
-        {
-            playerUIs[indexUi].adding[i].text = "adding" + i + ": " + player.Adding[i];
+            handSlots[i].ChangeActiv(value);
         }
     }
 
-    public void AddCardInSlot(int slotIndex, int cardID)
-    {
-        UiCardPrefab uiCard = Instantiate(UICardPrefab, slotsHands[slotIndex]).GetComponent<UiCardPrefab>();
-        uiCard.cardID = cardID;
-        uiCard.img.sprite = GameInformation.instance.allCards[cardID].sprite;
-        uiCard.transform.position = cardSpawnPos.position;
-        uiCard.transform.parent.SetSiblingIndex(slotIndex);
-        uiCard.StartCoroutine(uiCard.MoveZirroPos());
-    }
-
-    public void UpdateTimer(int value)
-    {
-        TextMeshProUGUI text;
-        if (localPlayer.IsCurrentPlayer) text = playerUIs[0].timerText;
-        else text = playerUIs[1].timerText;
-        text.text = "Timer:" + value;
-    }
 }
 
 [System.Serializable]
-public class PlayerUI
+public class UiInfo
 {
-    public bool isLocal;
-    public TextMeshProUGUI WallHp, TownHp;
-    public List<TextMeshProUGUI> resources = new List<TextMeshProUGUI>();
-    public List<TextMeshProUGUI> adding = new List<TextMeshProUGUI>();
-    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI TownHp, WallHp;
+    public TextMeshProUGUI[] resourcesText;
+    public TextMeshProUGUI[] addingText;
 }
-

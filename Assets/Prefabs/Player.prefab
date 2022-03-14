@@ -48,7 +48,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: 5077764b3cdf7aa4dbf86238abe3e4e4
   hasSpawned: 0
 --- !u!114 &7084215841971543070
 MonoBehaviour:
@@ -64,6 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  cardPrefab: {fileID: 5783143280804545038, guid: 96f834d43003dc1408628d404f84b522, type: 3}
 --- !u!114 &2803274495536985790
 MonoBehaviour:
   m_ObjectHideFlags: 0

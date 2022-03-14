@@ -401,18 +401,13 @@ public class LobbyManager : MonoBehaviour
 
                 NetworkServer.AddPlayerForConnection(playerConn, player);
 
-                matchController.players.Add(playerConn.identity);
+                matchController.players.Add(player.GetComponent<Player>());
                 PlayerInfo playerInfo = playerInfos[playerConn];
                 playerInfo.ready = true;
                 playerInfos[playerConn] = playerInfo;
-                
-                if(matchController.players.Count == 2)
-                {
-                    matchController.SetupPlayer();
-                }
-                
             }
 
+            StartCoroutine(WaitStartMathch(matchController));
 
             playerMatches.Remove(conn);
             openMatches.Remove(matchId);
@@ -423,6 +418,13 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    IEnumerator WaitStartMathch(MatchController match)
+    {
+        yield return new WaitForSeconds(0.5f);
+        match.Setup();
+        yield return new WaitForSeconds(1.5f);
+        match.StartMatch();
+    }
     
 
     void OnServerJoinMatch(NetworkConnection conn, Guid matchId)
