@@ -12,11 +12,15 @@ public class MatchController : NetworkBehaviour
     public Hud hud;
     public List<CardBase> cardsMatch = new List<CardBase>();
     public List<Player> players = new List<Player>();
-    public int currentPlayer = 0;
+    private int playerIndex = 0;
+    [SyncVar(hook =nameof(OnUpdateCurrentPlayer))]
+    public NetworkIdentity currentPlayer;
+
 
 
     public void Setup()
     {
+        currentPlayer = players[0].netIdentity;
         cardsMatch = GameInformation.instance.GetCards();
         foreach (var p in players)
         {
@@ -33,14 +37,21 @@ public class MatchController : NetworkBehaviour
             p.WallHp = 20;
             p.TownHp = 30;
         }
-       
+        
     }
 
     public void StartMatch()
     {
-        players[currentPlayer].RpcActivate();
+        Debug.LogError("START MATCH!");
     }
 
+    public void OnUpdateCurrentPlayer(NetworkIdentity _, NetworkIdentity newValue)
+    {
+        for (int i = 0; i < Hud.instance.handSlots.Count; i++)
+        {
+            Hud.instance.handSlots[i].SetActive(newValue.isLocalPlayer);
+        }
+    }
     public void OnPlayerDisconnected(NetworkConnection conn)
     {
 

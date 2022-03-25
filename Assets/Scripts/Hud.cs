@@ -7,23 +7,17 @@ public class Hud : MonoBehaviour
 {
     public static Hud instance;
     public static Player localPlayer;
-    public List<Slot> handSlots;
-    public List<RectTransform> tablePoints;
-    public RectTransform cardSpawnPos, cardDropPos;
+    public List<Slot> handSlots;   
+    public Transform cardSpawnPos, cardDropPos, tableContent;
+    public Vector2 tableOffset;
     public UiInfo[] uiInfos;
 
     private void Awake() => instance = this;
 
+
     
 
 
-    public void ChangeActiveSlots(bool value)
-    {
-        for (int i = 0; i < handSlots.Count; i++)
-        {
-            handSlots[i].ChangeActiv(value);
-        }
-    }
 
 }
 

@@ -94,11 +94,7 @@ public class Player : NetworkBehaviour
         Hud.instance.uiInfos[index].TownHp.text = "Towen " + newValue;
     }
 
-    [TargetRpc]
-    public void RpcActivate()
-    {
-        Hud.instance.ChangeActiveSlots(true);
-    }
+    
     [Command]
     public void CmdDropCard(int slotID, int cardID)
     {
